@@ -1,0 +1,850 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    overflow:hidden;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #e8d7bf,
+        #d8c0a0
+    );
+
+    font-family:
+    'Cormorant Garamond',
+    serif;
+}
+
+/* HERO */
+
+.hero{
+
+    position:relative;
+
+    width:100%;
+    height:100vh;
+
+    overflow:hidden;
+}
+
+/* TRIANGLES */
+
+.top,
+.bottom,
+.left,
+.right{
+
+    position:absolute;
+
+    transition:
+    1.5s cubic-bezier(.77,0,.18,1);
+
+    overflow:hidden;
+}
+
+/* TEXTURE */
+
+.top::before,
+.bottom::before,
+.left::before,
+.right::before{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+    radial-gradient(
+        rgba(255,255,255,.18) 1px,
+        transparent 1px
+    );
+
+    background-size:5px 5px;
+
+    opacity:.35;
+}
+
+/* TOP */
+
+.top{
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:50%;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #f6ead8,
+        #e8d5bc
+    );
+
+    clip-path:
+    polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    z-index:4;
+}
+
+/* BOTTOM */
+
+.bottom{
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+    height:50%;
+
+    background:
+    linear-gradient(
+        to top,
+        #f6ead8,
+        #e8d5bc
+    );
+
+    clip-path:
+    polygon(
+        0 100%,
+        100% 100%,
+        50% 0
+    );
+
+    z-index:1;
+}
+
+/* LEFT */
+
+.left{
+
+    top:0;
+    left:0;
+
+    width:50%;
+    height:100%;
+
+    background:
+    linear-gradient(
+        to right,
+        #d9bb8f,
+        #cda26a
+    );
+
+    clip-path:
+    polygon(
+        0 0,
+        100% 50%,
+        0 100%
+    );
+
+    z-index:3;
+}
+
+/* RIGHT */
+
+.right{
+
+    top:0;
+    right:0;
+
+    width:50%;
+    height:100%;
+
+    background:
+    linear-gradient(
+        to left,
+        #d9bb8f,
+        #cda26a
+    );
+
+    clip-path:
+    polygon(
+        100% 0,
+        0 50%,
+        100% 100%
+    );
+
+    z-index:2;
+}
+
+/* CONTENT */
+
+.hero-content{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:
+    translate(-50%,-50%);
+
+    width:90%;
+
+    text-align:center;
+
+    opacity:0;
+
+    transition:
+    opacity 1.2s ease;
+}
+
+.hero.open .hero-content{
+
+    opacity:1;
+}
+
+/* TEXT */
+
+.hero-small{
+
+    font-size:18px;
+
+    letter-spacing:5px;
+
+    color:#8f1010;
+}
+
+.hero-names{
+
+    font-family:
+    'Great Vibes',
+    cursive;
+
+    font-size:115px;
+
+    line-height:1.1;
+
+    color:#7a0020;
+
+    margin-top:25px;
+}
+
+.hero-text{
+
+    margin-top:35px;
+
+    font-size:28px;
+
+    line-height:1.8;
+
+    color:#6d4c41;
+}
+
+/* TAMPON */
+
+.seal{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:
+    translate(-50%,-50%);
+
+    width:370px;
+    height:370px;
+
+    object-fit:contain;
+
+    z-index:10;
+
+    cursor:pointer;
+
+    transition:
+    transform .5s ease,
+    opacity .5s ease;
+}
+
+/* OPEN */
+
+.hero.open .top{
+    transform:translateY(-120%);
+}
+
+.hero.open .bottom{
+    transform:translateY(120%);
+}
+
+.hero.open .left{
+    transform:translateX(-120%);
+}
+
+.hero.open .right{
+    transform:translateX(120%);
+}
+
+.hero.open .seal{
+
+    transform:
+    translate(-50%,-50%)
+    scale(0);
+
+    opacity:0;
+}
+
+/* SECTION */
+
+section{
+
+    width:100%;
+    min-height:100vh;
+
+    padding:160px 25px;
+
+    text-align:center;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #fffdf9,
+        #f7f1e8
+    );
+}
+
+/* TITLE */
+
+.section-title{
+
+    font-size:75px;
+
+    font-family:
+    'Great Vibes',
+    cursive;
+
+    color:#7a0020;
+
+    margin-bottom:50px;
+}
+
+/* SCRATCH */
+
+.scratch-container{
+
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.scratch{
+
+    width:180px;
+    height:180px;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:
+    radial-gradient(
+        circle at top,
+        #ffe8aa,
+        #c99634
+    );
+}
+
+.scratch canvas{
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+}
+
+.hidden{
+
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:42px;
+    font-weight:bold;
+
+    color:#7a0020;
+}
+
+/* PROGRAM */
+
+.program-boxes{
+
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.program-box{
+
+    width:280px;
+
+    background:white;
+
+    padding:40px 25px;
+
+    border-radius:30px;
+}
+
+.program-hour{
+
+    font-size:35px;
+
+    color:#8f1010;
+
+    font-weight:bold;
+
+    margin-bottom:20px;
+}
+
+.program-name{
+
+    font-size:35px;
+
+    font-family:
+    'Great Vibes',
+    cursive;
+
+    margin-bottom:15px;
+}
+
+.program-text{
+
+    font-size:20px;
+
+    line-height:1.7;
+}
+
+/* LOCATION */
+
+.venue-illustration{
+
+    width:100%;
+
+    display:flex;
+    justify-content:center;
+
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.venue-illustration img{
+
+    width:100%;
+    max-width:950px;
+
+    object-fit:contain;
+
+    mix-blend-mode:multiply;
+
+    opacity:.92;
+}
+
+.location-text{
+
+    font-size:28px;
+
+    line-height:2.2;
+
+    margin-bottom:90px;
+}
+
+/* Tighten spacing between the venue image and its texts (main location section) */
+.main-location .venue-illustration{
+    margin-top:20px;
+    margin-bottom:8px;
+}
+
+.main-location .venue-illustration img{
+    display:block;
+    margin:0 auto;
+}
+
+.main-location .final-location-title{
+    margin-top:0;
+    margin-bottom:6px;
+}
+
+.main-location .location-text{
+    margin-top:0;
+    margin-bottom:0;
+}
+
+/* MAP */
+
+.map-box{
+
+    width:100%;
+    max-width:900px;
+
+    margin:0 auto;
+
+    overflow:hidden;
+
+    border-radius:30px;
+}
+
+/* Locations layout: two maps side-by-side */
+.locations-section{
+    padding-bottom:80px;
+}
+
+.locations-row{
+    display:flex;
+    gap:30px;
+    justify-content:center;
+    align-items:flex-start;
+    flex-wrap:wrap;
+}
+
+.map-item{
+    flex:1 1 420px;
+    max-width:600px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.map-title{
+    font-family: 'Great Vibes', cursive;
+    font-size:32px;
+    color:#6e0f18;
+    text-align:center;
+}
+
+@media (max-width:768px){
+    .map-item{ flex:1 1 100%; max-width:100%; }
+    .map-title{ font-size:24px; }
+}
+
+.map-box iframe{
+
+    width:100%;
+    height:450px;
+
+    border:none;
+}
+
+/* DRESS CODE */
+
+.dress-image{
+
+    width:100%;
+
+    display:flex;
+    justify-content:center;
+
+    margin-top:20px;
+    margin-bottom:60px;
+}
+
+.dress-image img{
+
+    width:100%;
+    max-width:750px;
+
+    object-fit:contain;
+
+    mix-blend-mode:multiply;
+
+    opacity:.95;
+}
+
+.dress-description{
+
+    max-width:800px;
+
+    margin:auto;
+
+    font-size:32px;
+
+    line-height:1.8;
+
+    color:#b7a8a8;
+}
+
+/* CONFETTI */
+
+.confetti{
+
+    position:fixed;
+
+    top:-50px;
+
+    z-index:9999;
+
+    pointer-events:none;
+
+    animation:
+    fall linear forwards;
+}
+
+@keyframes fall{
+
+    100%{
+
+        transform:
+        translateY(120vh)
+        rotate(720deg);
+
+        opacity:0;
+    }
+
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+    .hero-names{
+        font-size:70px;
+    }
+
+    .hero-text{
+        font-size:20px;
+    }
+
+    .section-title{
+        font-size:50px;
+    }
+
+    .scratch{
+        width:120px;
+        height:120px;
+    }
+
+    .hidden{
+        font-size:28px;
+    }
+
+    .dress-description{
+        font-size:22px;
+    }
+
+}
+
+/* =========================
+REVEAL SECTION
+========================= */
+
+.reveal{
+
+    min-height:100vh;
+
+    padding:
+    120px 25px;
+
+    text-align:center;
+
+    background:#f5f1ef;
+}
+
+.reveal-title{
+
+    font-family:
+    'Great Vibes',
+    cursive;
+
+    font-size:95px;
+
+    color:#6e0f18;
+
+    margin-bottom:30px;
+}
+
+.reveal-subtitle{
+
+    font-size:24px;
+
+    letter-spacing:10px;
+
+    line-height:1.8;
+
+    color:#7d4a4f;
+
+    margin-bottom:90px;
+}
+.reveal-subtitle{
+
+        font-size:18px;
+
+        letter-spacing:6px;
+    }
+/* =========================
+MARRIED
+========================= */
+
+.married{
+
+    font-family:
+    'Great Vibes',
+    cursive;
+
+    font-size:90px;
+
+    line-height:1.4;
+
+    color:#6e0f18;
+
+    margin-bottom:70px;
+      font-size:72px;
+}
+
+/* =========================
+COUNTDOWN
+========================= */
+
+.countdown-title,.locations-title{
+
+    font-family:
+    'Great Vibes',
+    cursive;
+
+    font-size:95px;
+
+    color:#6e0f18;
+
+    margin-bottom:80px;
+}
+
+.countdown{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:35px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:140px;
+}
+
+    .count-box{
+
+        width:120px;
+        height:120px;
+
+        border-radius:25px;
+
+        border:4px solid #7a0f16;
+    }
+
+    .count-number{
+        font-size:42px;
+    }
+
+    .count-label{
+
+        font-size:16px;
+
+        letter-spacing:4px;
+    }
+ .reveal-title,
+    .countdown-title,
+    .dress-title,
+    .location-title{
+
+        font-size:68px;
+    }
+/* FINAL LOCATIONS */
+
+.final-locations{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    flex-wrap:wrap;
+    margin-top:60px;
+}
+
+.final-location-card{
+    width:100%;
+    max-width:520px;
+    background:white;
+    padding:25px;
+    border-radius:35px;
+
+    box-shadow:
+    0 10px 35px
+    rgba(0,0,0,.08);
+}
+    .final-location-card iframe{
+    width:100%;
+    height:350px;
+    border:none;
+    border-radius:25px;
+}
+
+.final-location-title{
+    margin-top:15px;
+    font-family:'Great Vibes',cursive;
+    font-size:48px;
+    color:#7a0020;
+}
+
+.final-location-text{
+    margin-top:8px;
+    font-size:24px;
+    line-height:1.4;
+}
+
+
+/* FINAL TEXT */
+
+.final-message{
+
+
+    display:block;
+    margin-top:35px;
+    font-family:'Great Vibes',cursive;
+    font-size:65px;
+    color:#7a0020;
+}
+
+/* MAIN LOCATION: reduce vertical spacing between title, image and text */
+.main-location{
+    padding-top:60px; /* reduce from default 160px */
+    padding-bottom:40px;
+}
+
+.main-location .section-title{
+    margin-bottom:8px; /* tighten gap below section title */
+}
+
+.main-location .venue-illustration{
+    margin-top:6px;
+    margin-bottom:6px;
+}
+
+.main-location .final-location-title{
+    margin-top:6px;
+    margin-bottom:6px;
+}
+
+.main-location .location-text{
+    margin-top:0;
+    margin-bottom:12px;
+}
