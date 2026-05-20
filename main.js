@@ -237,61 +237,33 @@ scratches.forEach((scratch)=>{
 
 });
 
-/* CONFETTI */
-
-function launchConfetti(){
-
-    for(let i=0; i<220; i++){
-
-        const confetti =
-        document.createElement("div");
-
-        confetti.classList.add("confetti");
-
-        const size =
-        Math.random() * 12 + 8;
-
-        confetti.style.width =
-        size + "px";
-
-        confetti.style.height =
-        size + "px";
-
-        confetti.style.borderRadius =
-        Math.random() > 0.5
-        ? "50%"
-        : "3px";
-
-        confetti.style.left =
-        Math.random() * 100 + "vw";
-
-        confetti.style.background =
-        [
-            "#7d0d0d",
-            "#ffffff",
-            "#d4a041",
-            "#5d1b1b"
-        ][
-            Math.floor(
-                Math.random() * 4
-            )
-        ];
-
-        confetti.style.animationDuration =
-        (Math.random() * 3 + 3)
-        + "s";
-
-        document.body.appendChild(
-            confetti
-        );
-
-        setTimeout(()=>{
-
-            confetti.remove();
-
-        },7000);
-
+/* CONFETTI - Compatible with Mobile */
+function launchConfetti() {
+    if (typeof confetti === "function") {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+        });
+    } else {
+        console.warn("Confetti library not loaded.");
     }
-
 }
+
+// Ensure confetti works on both desktop and mobile
+scratches.forEach((scratch) => {
+    const canvas = scratch.querySelector("canvas");
+
+    canvas.addEventListener("pointerup", () => {
+        if (finishedScratch === scratches.length) {
+            launchConfetti();
+        }
+    });
+
+    canvas.addEventListener("touchend", () => {
+        if (finishedScratch === scratches.length) {
+            launchConfetti();
+        }
+    });
+});
 
