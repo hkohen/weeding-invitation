@@ -1,56 +1,43 @@
 /* ELEMENTS */
+const hero = document.getElementById("hero");
+const openBtn = document.getElementById("openBtn");
+const music = document.getElementById("music");
 
-const seal =
-document.getElementById("seal");
-
-const hero =
-document.getElementById("hero");
-
-const music =
-document.getElementById("music");
 
 let _wasPlayingBeforeHide = false;
 
 document.addEventListener("visibilitychange", () => {
-
     if (document.hidden) {
-        // remember whether music was playing, then pause (don't reset time)
         _wasPlayingBeforeHide = !!(music && !music.paused && !music.ended);
-        music.pause();
+        music && music.pause();
     } else {
-        // page became visible — resume if it was playing before
-        if (_wasPlayingBeforeHide) {
-            music.play().catch(() => {
-                // autoplay might be blocked by browser; ignore errors
-            });
+        if (_wasPlayingBeforeHide && music) {
+            music.play().catch(() => {});
         }
         _wasPlayingBeforeHide = false;
     }
-
 });
 
-window.addEventListener(
-"beforeunload",
-()=>{
-
-music.pause();
-music.currentTime = 0;
-
+window.addEventListener("beforeunload", () => {
+    if (music) {
+        music.pause();
+        music.currentTime = 0;
+    }
 });
-/* OPEN */
 
-seal.addEventListener(
-"click",
-()=>{
+/* OUVERTURE RIDEAU */
 
-music.play();
-
-hero.classList.add("open");
-
-document.body.style.overflowY =
-"auto";
-
-});
+if (openBtn) {
+    openBtn.addEventListener("click", () => {
+        music && music.play();
+        hero && hero.classList.add("open");
+        openBtn.style.opacity = "0";
+        setTimeout(() => {
+            openBtn.style.display = "none";
+            document.body.style.overflowY = "auto";
+        }, 2200);
+    });
+}
 
 /* COUNTDOWN */
 
@@ -139,40 +126,38 @@ scratches.forEach((scratch)=>{
     const ctx =
     canvas.getContext("2d");
 
-    canvas.width =
-    scratch.offsetWidth;
+    // match canvas pixel size to element size while accounting for devicePixelRatio
+    const ratio = window.devicePixelRatio || 1;
+    const cssWidth = scratch.offsetWidth;
+    const cssHeight = scratch.offsetHeight;
+    canvas.width = Math.round(cssWidth * ratio);
+    canvas.height = Math.round(cssHeight * ratio);
+    canvas.style.width = cssWidth + "px";
+    canvas.style.height = cssHeight + "px";
+    // prevent default touch behaviors via CSS and JS
+    canvas.style.touchAction = 'none';
 
-    canvas.height =
-    scratch.offsetHeight;
+    ctx.fillStyle = "#d4a041";
 
-    ctx.fillStyle =
-    "#d4a041";
-
-    ctx.fillRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+    // Fill using device pixels (canvas.width/height are in device pixels)
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     let drawing = false;
     let completed = false;
 
     function erase(x,y){
 
-        ctx.globalCompositeOperation =
-        "destination-out";
+        ctx.globalCompositeOperation = "destination-out";
 
         ctx.beginPath();
 
-        ctx.arc(
-            x,
-            y,
-            22,
-            0,
-            Math.PI * 2
-        );
+        // Account for devicePixelRatio: canvas coordinates are in device pixels
+        const r = window.devicePixelRatio || 1;
+        const rx = Math.round(x * r);
+        const ry = Math.round(y * r);
+        const radius = Math.max(10, Math.round(22 * r));
 
+        ctx.arc(rx, ry, radius, 0, Math.PI * 2);
         ctx.fill();
 
         checkScratch();
@@ -183,102 +168,72 @@ scratches.forEach((scratch)=>{
 
         if(completed) return;
 
-        const imageData =
-        ctx.getImageData(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
+        // Read device pixel data (canvas.width/height in device pixels)
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
         let transparent = 0;
 
-        for(
-            let i = 3;
-            i < imageData.data.length;
-            i += 4
-        ){
-
-            if(imageData.data[i] < 50){
-
+        for (let i = 3; i < imageData.data.length; i += 4) {
+            if (imageData.data[i] === 0) {
                 transparent++;
-
             }
-
         }
 
-        const percent =
-        transparent /
-        (canvas.width * canvas.height);
+        const totalPixels = canvas.width * canvas.height;
+        const percent = transparent / totalPixels;
 
-        if(percent > 0.55){
-
+        // When more than ~55% of the area is scratched, mark completed
+        if (percent > 0.55) {
             completed = true;
-
             finishedScratch++;
-
             canvas.style.opacity = "0";
-
-            if(finishedScratch === 3){
-
+            if (finishedScratch === 3) {
                 launchConfetti();
-
             }
-
         }
 
     }
 
-    canvas.addEventListener(
-        "mousedown",
-        ()=>{
-            drawing = true;
-        }
-    );
+    // Use Pointer Events for unified mouse/pen/touch handling
+    canvas.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        drawing = true;
+        canvas.setPointerCapture && canvas.setPointerCapture(e.pointerId);
+        const rect = canvas.getBoundingClientRect();
+        erase(e.clientX - rect.left, e.clientY - rect.top);
+    });
 
-    canvas.addEventListener(
-        "mouseup",
-        ()=>{
-            drawing = false;
-        }
-    );
+    canvas.addEventListener('pointermove', (e) => {
+        if (!drawing) return;
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        erase(e.clientX - rect.left, e.clientY - rect.top);
+    });
 
-    canvas.addEventListener(
-        "mousemove",
-        (e)=>{
+    canvas.addEventListener('pointerup', (e) => {
+        drawing = false;
+        try { canvas.releasePointerCapture && canvas.releasePointerCapture(e.pointerId); } catch (err) {}
+    });
 
-            if(!drawing) return;
+    // Fallback for older touch-only browsers: ensure listeners are non-passive
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        drawing = true;
+        const rect = canvas.getBoundingClientRect();
+        const t = e.touches[0];
+        erase(t.clientX - rect.left, t.clientY - rect.top);
+    }, { passive: false });
 
-            const rect =
-            canvas.getBoundingClientRect();
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const t = e.touches[0];
+        erase(t.clientX - rect.left, t.clientY - rect.top);
+    }, { passive: false });
 
-            erase(
-                e.clientX - rect.left,
-                e.clientY - rect.top
-            );
-
-        }
-    );
-
-    canvas.addEventListener(
-        "touchmove",
-        (e)=>{
-
-            e.preventDefault();
-
-            const rect =
-            canvas.getBoundingClientRect();
-
-            const touch =
-            e.touches[0];
-
-            erase(
-                touch.clientX - rect.left,
-                touch.clientY - rect.top
-            );
-
-        }
-    );
+    canvas.addEventListener('touchend', (e) => {
+        drawing = false;
+    });
 
 });
 

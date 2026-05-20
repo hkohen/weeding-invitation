@@ -36,151 +36,6 @@ body{
     overflow:hidden;
 }
 
-/* TRIANGLES */
-
-.top,
-.bottom,
-.left,
-.right{
-
-    position:absolute;
-
-    transition:
-    1.5s cubic-bezier(.77,0,.18,1);
-
-    overflow:hidden;
-}
-
-/* TEXTURE */
-
-.top::before,
-.bottom::before,
-.left::before,
-.right::before{
-
-    content:"";
-
-    position:absolute;
-    inset:0;
-
-    background:
-    radial-gradient(
-        rgba(255,255,255,.18) 1px,
-        transparent 1px
-    );
-
-    background-size:5px 5px;
-
-    opacity:.35;
-}
-
-/* TOP */
-
-.top{
-
-    top:0;
-    left:0;
-
-    width:100%;
-    height:50%;
-
-    background:
-    linear-gradient(
-        to bottom,
-        #f6ead8,
-        #e8d5bc
-    );
-
-    clip-path:
-    polygon(
-        0 0,
-        100% 0,
-        50% 100%
-    );
-
-    z-index:4;
-}
-
-/* BOTTOM */
-
-.bottom{
-
-    bottom:0;
-    left:0;
-
-    width:100%;
-    height:50%;
-
-    background:
-    linear-gradient(
-        to top,
-        #f6ead8,
-        #e8d5bc
-    );
-
-    clip-path:
-    polygon(
-        0 100%,
-        100% 100%,
-        50% 0
-    );
-
-    z-index:1;
-}
-
-/* LEFT */
-
-.left{
-
-    top:0;
-    left:0;
-
-    width:50%;
-    height:100%;
-
-    background:
-    linear-gradient(
-        to right,
-        #d9bb8f,
-        #cda26a
-    );
-
-    clip-path:
-    polygon(
-        0 0,
-        100% 50%,
-        0 100%
-    );
-
-    z-index:3;
-}
-
-/* RIGHT */
-
-.right{
-
-    top:0;
-    right:0;
-
-    width:50%;
-    height:100%;
-
-    background:
-    linear-gradient(
-        to left,
-        #d9bb8f,
-        #cda26a
-    );
-
-    clip-path:
-    polygon(
-        100% 0,
-        0 50%,
-        100% 100%
-    );
-
-    z-index:2;
-}
 
 /* CONTENT */
 
@@ -345,8 +200,8 @@ section{
 
 .scratch{
 
-    width:180px;
-    height:180px;
+    width:240px;
+    height:240px;
 
     border-radius:50%;
 
@@ -371,6 +226,7 @@ section{
 
     width:100%;
     height:100%;
+    touch-action: none; /* prevent scrolling while scratching on touch devices */
 }
 
 .hidden{
@@ -853,21 +709,21 @@ COUNTDOWN
     width:100%;
 
     height:100vh;
-
+    padding:0 !important; /* remove section default padding so it's a clean full-screen page */
+    min-height:100vh !important;
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     text-align:center;
-
     background:
-    linear-gradient(
-        to bottom,
-        #efe5da,
-        #f8f4ef
-    );
+        linear-gradient(
+            to bottom,
+            #efe5da,
+            #f8f4ef
+        );
+    box-shadow:none !important;
+    border-radius:0 !important;
+    background-clip:border-box;
 }
 
 .ending-text{
@@ -876,7 +732,151 @@ COUNTDOWN
     'Great Vibes',
     cursive;
 
-    font-size:90px;
-
+    font-size:140px;
+    line-height:1.0;
     color:#7a0020;
+    max-width:90%;
+    margin:0 20px;
+    text-wrap:balance;
+    word-break:break-word;
+}
+
+/* Make ending text responsive and prominent */
+@media (max-width:1200px) {
+    .ending-text{ font-size:110px; }
+}
+@media (max-width:768px) {
+    .ending-text{ font-size:64px; }
+}
+.big-date{
+    font-size:65px;
+}
+/* =========================
+   RIDEAU
+========================= */
+
+.curtain-wrapper{
+
+    position:absolute;
+    inset:0;
+
+    display:flex;
+
+    z-index:20;
+}
+
+.curtain{
+
+    width:50%;
+    height:100%;
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:transform 2.2s ease-in-out;
+
+    background:
+    repeating-linear-gradient(
+        90deg,
+        #720000 0px,
+        #980000 18px,
+        #6d0000 36px
+    );
+}
+
+/* TEXTURE */
+
+.curtain::before{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+    repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.12) 0px,
+        rgba(0,0,0,0.20) 18px
+    );
+}
+
+/* OUVERTURE */
+
+.hero.open .left-curtain{
+
+    transform:translateX(-100%);
+}
+
+.hero.open .right-curtain{
+
+    transform:translateX(100%);
+}
+
+/* =========================
+   BOUTON TAP
+========================= */
+
+.tap-box{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    z-index:30;
+
+    padding:12px 30px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(8px);
+
+    border:1px solid rgba(255,255,255,0.25);
+
+    box-shadow:
+    0 4px 20px rgba(0,0,0,0.18),
+    inset 0 1px 2px rgba(255,255,255,0.15);
+
+    cursor:pointer;
+
+    animation:float 2s ease-in-out infinite;
+}
+
+/* TEXTE */
+
+.tap-box span{
+
+    font-size:15px;
+
+    letter-spacing:3px;
+
+    color:white;
+
+    font-weight:500;
+
+    text-shadow:
+    0 2px 5px rgba(0,0,0,0.35);
+}
+
+/* ANIMATION */
+
+@keyframes float{
+
+    0%{
+        transform:translate(-50%,-50%) translateY(0px);
+    }
+
+    50%{
+        transform:translate(-50%,-50%) translateY(-6px);
+    }
+
+    100%{
+        transform:translate(-50%,-50%) translateY(0px);
+    }
 }
