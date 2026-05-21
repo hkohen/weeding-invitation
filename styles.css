@@ -887,7 +887,7 @@ COUNTDOWN
 
 .hero-scroll-indicator{
 
-    position:absolute;
+    position:fixed;
 
     bottom:25px;
     right:20px;
