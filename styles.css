@@ -889,10 +889,8 @@ COUNTDOWN
 
     position:absolute;
 
-    bottom: 95px;
-    left:85%;
-
-    transform:translateX(-50%);
+    bottom:95px;
+    right:30px;
 
     display:flex;
     flex-direction:column;
@@ -920,8 +918,7 @@ COUNTDOWN
 
     letter-spacing:4px;
 
-    color:  #7a0020;
-
+    color:#7a0020;
 
     text-shadow:
     0 2px 6px rgba(0,0,0,0.4);
@@ -935,16 +932,38 @@ COUNTDOWN
     border-right:2px solid #7a0020;
     border-bottom:2px solid #7a0020;
 
-    transform:rotate(45deg);    
+    transform:rotate(45deg);
 }
 
 @keyframes heroScrollBounce{
 
     0%,100%{
-        transform:translateX(-50%) translateY(0);
+        transform:translateY(0);
     }
 
     50%{
-        transform:translateX(-50%) translateY(8px);
+        transform:translateY(8px);
+    }
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .hero-scroll-indicator{
+
+        right:18px;
+        bottom:70px;
+    }
+
+    .hero-scroll-indicator span{
+
+        font-size:11px;
+        letter-spacing:3px;
+    }
+
+    .hero-scroll-arrow{
+
+        width:13px;
+        height:13px;
     }
 }
