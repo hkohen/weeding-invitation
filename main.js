@@ -267,3 +267,15 @@ scratches.forEach((scratch) => {
     });
 });
 
+const scrollIndicator = document.querySelector(".hero-scroll-indicator");
+
+window.addEventListener("scroll", () => {
+
+    const heroBottom = hero.offsetHeight;
+
+    if (window.scrollY > heroBottom - 100) {
+        scrollIndicator.style.opacity = "0";
+    } else if (hero.classList.contains("open")) {
+        scrollIndicator.style.opacity = "0.9";
+    }
+});

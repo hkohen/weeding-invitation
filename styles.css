@@ -898,19 +898,20 @@ COUNTDOWN
 
     gap:10px;
 
-    z-index:999;
+    z-index:25;
 
     opacity:0;
-
     transition:opacity 1.5s ease;
 
     animation:heroScrollBounce 2s infinite;
 }
 
-/* apparaît quand le hero est ouvert */
+/* visible uniquement dans le hero open */
 .hero.open .hero-scroll-indicator{
     opacity:0.9;
 }
+
+
 
 .hero-scroll-indicator span{
 
