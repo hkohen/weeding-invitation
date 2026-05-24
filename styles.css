@@ -988,7 +988,7 @@ COUNTDOWN
 /* MOBILE */
 @media (max-width: 768px) {
     #wedibox-embed iframe {
-        height: 720px;
+        height: 600px;
     }
 }
 
