@@ -970,8 +970,13 @@ COUNTDOWN
 
 .gallery-section {
     padding: 6rem 1.5rem;
-    background: #f5f1ec;
     text-align: center;
+     background:
+   linear-gradient(
+        to bottom,
+        #fffdf9,
+        #f7f1e8
+    )
 }
 
 .gallery-title {
@@ -1035,8 +1040,13 @@ COUNTDOWN
     position: relative;
     overflow: hidden;
     padding: 6rem 1.5rem;
-    background: #f5f1ec;
     text-align: center;
+     background:
+   linear-gradient(
+        to bottom,
+        #fffdf9,
+        #f7f1e8
+    );
 }
 
 /* FLOATING HEARTS */
