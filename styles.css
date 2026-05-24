@@ -967,3 +967,31 @@ COUNTDOWN
         height:12px;
     }
 }
+
+#wedibox-embed {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden; /* IMPORTANT */
+    line-height: 0;
+
+}
+
+#wedibox-embed iframe {
+    width: 100%;
+    height: 450px; /* fixe au lieu de min-height */
+    border: none;
+    display: block;
+    overflow: hidden;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    #wedibox-embed iframe {
+        height: 720px;
+    }
+}
+
+.gallery-section{
+ background: linear-gradient(to bottom, #fdfaf4)
+}
